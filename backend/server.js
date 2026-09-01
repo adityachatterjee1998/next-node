@@ -16,19 +16,16 @@ mongoose
     console.error("MongoDB connection failed:", error);
   });
 
-app.get("/api/tasks", (req, res) => {
-  res.json([
-    {
-      id: 1,
-      title: "Learn Node.js",
-      completed: false,
-    },
-    {
-      id: 2,
-      title: "Learn Express",
-      completed: false,
-    },
-  ]);
+app.get("/api/tasks", async (req, res) => {
+  try {
+    const tasks = await Task.find();
+
+    res.json(tasks);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to fetch tasks",
+    });
+  }
 });
 
 app.post("/api/tasks", async (req, res) => {
@@ -46,6 +43,26 @@ app.post("/api/tasks", async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "Failed to create task",
+    });
+  }
+});
+
+app.delete("/api/tasks/:id", async (req, res) => {
+  try {
+    const deletedTask = await Task.findByIdAndDelete(req.params.id);
+
+    if (!deletedTask) {
+      return res.status(404).json({
+        message: "Task not found",
+      });
+    }
+
+    res.json({
+      message: "Task deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to delete task",
     });
   }
 });
