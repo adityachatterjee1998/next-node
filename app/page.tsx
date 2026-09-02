@@ -115,7 +115,11 @@ export default function Home() {
 
       {/* Page Header */}
       <Box sx={{ mb: 4 }}>
-        <Typography variant="h3" fontWeight="bold" gutterBottom>
+        <Typography
+          variant="h3"
+          sx={{ fontWeight: "bold" }}
+          gutterBottom
+        >
           My Tasks
         </Typography>
 
@@ -133,7 +137,7 @@ export default function Home() {
           borderRadius: 3,
         }}
       >
-        <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
+        <Typography variant="h5" sx={{ fontWeight: "bold", mb: 2 }} >
           Add New Task
         </Typography>
 
@@ -167,7 +171,7 @@ export default function Home() {
       </Paper>
 
       {/* Existing Tasks */}
-      <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
+      <Typography variant="h5" sx={{ fontWeight: "bold", mb: 2 }}>
         Existing Tasks ({tasks.length})
       </Typography>
 
@@ -188,11 +192,7 @@ export default function Home() {
             >
               <Typography
                 variant="h6"
-                fontWeight="bold"
-                sx={{
-                  mb: 1,
-                  wordBreak: "break-word",
-                }}
+                sx={{ fontWeight: "bold", mb: 2, wordBreak: "break-word" }}
               >
                 {task.title}
               </Typography>
