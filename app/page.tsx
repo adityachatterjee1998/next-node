@@ -25,6 +25,10 @@ export default function Home() {
   }, []);
 
   const handleAddTask = async () => {
+    if (title.trim().length < 5) {
+      alert("Task title must be at least 5 characters");
+      return;
+    }
     try {
       const response = await fetch(
         "http://localhost:5000/api/tasks",
@@ -34,8 +38,8 @@ export default function Home() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            title,
-            description,
+            title: title.trim(),
+            description: description.trim(),
           }),
         }
       );
@@ -156,6 +160,7 @@ export default function Home() {
           size="large"
           sx={{ mt: 2 }}
           onClick={handleAddTask}
+          disabled={title.trim().length < 5}
         >
           Add Task
         </Button>
@@ -163,7 +168,7 @@ export default function Home() {
 
       {/* Existing Tasks */}
       <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
-        Existing Tasks
+        Existing Tasks ({tasks.length})
       </Typography>
 
       {tasks.length === 0 ? (
@@ -184,7 +189,10 @@ export default function Home() {
               <Typography
                 variant="h6"
                 fontWeight="bold"
-                sx={{ mb: 1 }}
+                sx={{
+                  mb: 1,
+                  wordBreak: "break-word",
+                }}
               >
                 {task.title}
               </Typography>
@@ -204,9 +212,7 @@ export default function Home() {
               />
               <Stack direction="row" spacing={2}>
                 <Button
-                  variant={
-                    task.completed ? "contained" : "outlined"
-                  }
+                  variant={task.completed ? "contained" : "outlined"}
                   onClick={() =>
                     handleUpdateTask(
                       task._id,
@@ -214,17 +220,17 @@ export default function Home() {
                     )
                   }
                 >
-                  {task.completed
-                    ? "Completed"
-                    : "Mark as Completed"}
+                  {task.completed ? "Mark as Pending" : "Mark Complete"}
                 </Button>
 
                 <Button
                   variant="outlined"
                   color="error"
-                  onClick={() =>
-                    handleDeleteTask(task._id)
-                  }
+                  onClick={() => {
+                    if (window.confirm("Are you sure you want to delete this task?")) {
+                      handleDeleteTask(task._id);
+                    }
+                  }}
                 >
                   Delete
                 </Button>
