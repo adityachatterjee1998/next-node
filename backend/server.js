@@ -18,7 +18,7 @@ mongoose
 
 app.get("/api/tasks", async (req, res) => {
   try {
-    const tasks = await Task.find();
+    const tasks = await Task.find({ isDeleted: false });
 
     res.json(tasks);
   } catch (error) {
@@ -49,7 +49,11 @@ app.post("/api/tasks", async (req, res) => {
 
 app.delete("/api/tasks/:id", async (req, res) => {
   try {
-    const deletedTask = await Task.findByIdAndDelete(req.params.id);
+    const deletedTask = await Task.findByIdAndUpdate(
+      req.params.id,
+      { isDeleted: true },
+      { new: true },
+    );
 
     if (!deletedTask) {
       return res.status(404).json({
@@ -63,6 +67,27 @@ app.delete("/api/tasks/:id", async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "Failed to delete task",
+    });
+  }
+});
+app.patch("/api/tasks/:id", async (req, res) => {
+  try {
+    const updatedTask = await Task.findByIdAndUpdate(
+      req.params.id,
+      { completed: req.body.completed },
+      { new: true },
+    );
+
+    if (!updatedTask) {
+      return res.status(404).json({
+        message: "Task not found",
+      });
+    }
+
+    res.json(updatedTask);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to update task",
     });
   }
 });
