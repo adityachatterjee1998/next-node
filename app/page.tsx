@@ -17,7 +17,7 @@ export default function Home() {
   const [description, setDescription] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/tasks")
+    fetch("https://next-node-backend-sj88.onrender.com/api/tasks")
       .then((response) => response.json())
       .then((data) => {
         setTasks(data);
@@ -31,7 +31,7 @@ export default function Home() {
     }
     try {
       const response = await fetch(
-        "http://localhost:5000/api/tasks",
+        "https://next-node-backend-sj88.onrender.com/api/tasks",
         {
           method: "POST",
           headers: {
@@ -60,7 +60,7 @@ export default function Home() {
   const handleDeleteTask = async (taskId: string) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/tasks/${taskId}`,
+        `https://next-node-backend-sj88.onrender.com/api/tasks/${taskId}`,
         {
           method: "DELETE",
         }
@@ -84,7 +84,7 @@ export default function Home() {
   ) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/tasks/${taskId}`,
+        `https://next-node-backend-sj88.onrender.com/api/tasks/${taskId}`,
         {
           method: "PATCH",
           headers: {
